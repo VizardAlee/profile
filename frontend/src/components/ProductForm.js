@@ -10,6 +10,7 @@ const ProductForm = () => {
   const [sellingPrice, setSellingPrice] = useState('')
   const [quantity, setQuantity] =useState('')
   const [error, setError] = useState(null)
+  const [emptyFields, setEmptyFields] = useState([])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,6 +29,7 @@ const ProductForm = () => {
 
     if (!response.ok) {
       setError(json.error)
+      setEmptyFields(json.emptyFields)
     }
 
     if (response.ok) {
@@ -38,6 +40,7 @@ const ProductForm = () => {
       setSellingPrice('')
       setQuantity('')
       setError(null)
+      setEmptyFields([])
       console.log('new product added', json)
       dispatch({type: 'CREATE_PRODUCT', payload: json})
     }
@@ -52,6 +55,7 @@ const ProductForm = () => {
         type='text'
         onChange={(e) => setName(e.target.value)}
         value={name}
+        className={emptyFields.includes('name') ? 'error' : ''}
       />
 
       <label>Product Category</label>
@@ -66,6 +70,7 @@ const ProductForm = () => {
         type='number'
         onChange={(e) => setPurchasePrice(e.target.value)}
         value={purchasePrice}
+        className={emptyFields.includes('purchasePrice') ? 'error' : ''}
       />
 
       <label>Profit Margin</label>
@@ -73,6 +78,7 @@ const ProductForm = () => {
         type='number'
         onChange={(e) => setProfitMargin(e.target.value)}
         value={profitMargin}
+        className={emptyFields.includes('profitMargin') ? 'error' : ''}
       />
 
       <label>Selling Price</label>
@@ -80,6 +86,7 @@ const ProductForm = () => {
         type='number'
         onChange={(e) => setSellingPrice(e.target.value)}
         value={sellingPrice}
+        className={emptyFields.includes('sellingPrice') ? 'error' : ''}
       />
 
       <label>Quantity</label>
@@ -87,6 +94,7 @@ const ProductForm = () => {
         type='number'
         onChange={(e) => setQuantity(e.target.value)}
         value={quantity}
+        className={emptyFields.includes('quantity') ? 'error' : ''}
       />
 
       <button>Add Product</button>

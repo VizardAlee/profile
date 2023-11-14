@@ -27,7 +27,29 @@ const getProduct = async (req, res)  => {
 
 // create new product
 const createProduct = async (req, res) => {
-  const {name, category, purchasePrice, profitMargin, sellingPrice} = req.body
+  const {name, category, purchasePrice, profitMargin, sellingPrice, quantity} = req.body
+
+  let emptyFields = []
+
+  if(!name) {
+    emptyFields.push('name')
+  }
+  if(!purchasePrice) {
+    emptyFields.push('purchasePrice')
+  }
+  if(!profitMargin) {
+    emptyFields.push('profitMargin')
+  }
+  if(!sellingPrice) {
+    emptyFields.push('sellingPrice')
+  }
+  if(!quantity) {
+    emptyFields.push('quantity')
+  }
+
+  if(emptyFields.length > 0) {
+    return res.status(400).json({error: 'Please fill in highlighted fields', emptyFields })
+  }
 
   // add to db
   try {
