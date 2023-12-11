@@ -7,7 +7,12 @@ const {
   updateProduct
 } = require('../controllers/productController')
 
+const requireAuth = require('../middleware/requireAuth.js')
+
 const router = express.Router()
+
+// require auth for all workout routes
+router.use(requireAuth)
 
 //  GET all products
 router.get('/', getProducts)
