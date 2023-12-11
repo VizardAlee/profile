@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 
 //  get all products
 const getProducts = async (req, res) => {
-  const products = await Product.find({}).sort({createdAt: -1})
+  const user_id = req.user._id
+
+  const products = await Product.find({ user_id }).sort({createdAt: -1})
 
   res.status(200).json(products)
 }
@@ -53,7 +55,8 @@ const createProduct = async (req, res) => {
 
   // add to db
   try {
-    const product = await Product.create({name, category, purchasePrice, profitMargin, sellingPrice})
+    const user_id = req.user._id
+    const product = await Product.create({name, category, purchasePrice, profitMargin, sellingPrice, user_id})
     res.status(200).json(product)
   } catch (error) {
     res.status(400).json({error: error.message})
