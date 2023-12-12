@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useProductsContext } from "../hooks/useProductsContext"
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const ProductForm = () => {
-  const {dispatch} = useProductsContext()
+  const {products, dispatch} = useProductsContext()
   const {user} = useAuthContext()
 
   const [name, setName] = useState('')
@@ -12,8 +12,32 @@ const ProductForm = () => {
   const [profitMargin, setProfitMargin] = useState('')
   const [sellingPrice, setSellingPrice] = useState('')
   const [quantity, setQuantity] =useState('')
+  const [skuOption, setSkuOption] = useState('manual')
+  const [manualSku, setManualSku] = useState('')
+  const [autoGenerateSku, setAutoGenerateSku] = useState('')
   const [error, setError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
+
+  // Generate a random alphabetic SKU
+  const generateSku = () => {
+    const alpanumericChars = 'ABCDEFGHIJKLIMNOPQRSTUVWXYZ0123456789';
+    const sku = Array.from({ length: 8 }, () => alpanumericChars[Math.floor(Math.random() * alpanumericChars.length)]).join('');
+    setAutoGenerateSku(sku)
+  }
+
+  useEffect(() =>  {
+    if (skuOption === 'auto') {
+      generateSku();
+    }
+  }, [skuOption])
+
+  useEffect(() => {
+    // Calculate selling price based on purchase price and margin
+    if (purchasePrice !== '' && profitMargin !== '') {
+      const calculatedSellingPrice = (parseFloat(purchasePrice) * (1 + parseFloat(profitMargin) / 100)).toFixed(2);
+      setSellingPrice(calculatedSellingPrice);
+    }
+  }, [purchasePrice, profitMargin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -23,7 +47,23 @@ const ProductForm = () => {
       return
     }
 
-    const product = {name, category, purchasePrice, profitMargin, sellingPrice, quantity}
+    const skuToCheck = skuOption === 'manual' ? manualSku : autoGenerateSku;
+
+    // Check for duplicate SKU
+    if (products.some((product) => product.sku === skuToCheck)) {
+      setError('SKU already exists. Please choose a different one.')
+      return
+    }
+
+    const product = {
+      name,
+      category,
+      purchasePrice,
+      profitMargin,
+      sellingPrice,
+      quantity,
+      sku: skuOption === 'manual' ? manualSku : autoGenerateSku,
+    }
 
     const response = await fetch('/api/products', {
       method: 'POST',
@@ -48,6 +88,9 @@ const ProductForm = () => {
       setProfitMargin('')
       setSellingPrice('')
       setQuantity('')
+      setManualSku('')
+      setAutoGenerateSku('')
+      setSkuOption('manual')
       setError(null)
       setEmptyFields([])
       console.log('new product added', json)
@@ -106,6 +149,25 @@ const ProductForm = () => {
         className={emptyFields.includes('quantity') ? 'error' : ''}
       />
 
+      <label>SKU Option</label>
+      <select value={skuOption} onChange={(e) => setSkuOption(e.target.value)}>
+        <option value="manual">Manual</option>
+        <option value="auto">Auto-generate</option>
+      </select>
+
+      {skuOption === 'manual' && (
+        <>
+          <label>Manual SKU</label>
+          <input type="text" onChange={(e) => setManualSku(e.target.value)} value={manualSku} />
+        </>
+      )}
+
+      {skuOption === 'auto' && (
+        <>
+          <label>Auto-generated SKU</label>
+          <input type="text" readOnly value={autoGenerateSku} />
+        </>
+      )}
       <button>Add Product</button>
       {error && <div className='error'>{error}</div>}
     </form>
