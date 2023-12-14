@@ -96,6 +96,31 @@ input {
   box-sizing: border-box;
 }
 
+/* Apply similar styles to the select element */
+select {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: "Roboto"; /* Apply the same font-family */
+}
+
+/* Style the select element when it's in focus */
+select:focus {
+  outline: none;
+  border-color: var(--primary); /* Highlight border color on focus */
+  box-shadow: 0 0 5px rgba(26, 172, 131, 0.5); /* Add a subtle box shadow on focus */
+}
+
+/* Style the select element when it's in error state */
+select.error {
+  border: 1px solid var(--error);
+}
+
+
 form button {
   background: var(--primary);
   border: 0;

@@ -29,7 +29,7 @@ const getProduct = async (req, res)  => {
 
 // create new product
 const createProduct = async (req, res) => {
-  const {name, category, purchasePrice, profitMargin, sellingPrice, quantity} = req.body
+  const {name, category, purchasePrice, profitMargin, sellingPrice, quantity, sku} = req.body
 
   let emptyFields = []
 
@@ -48,6 +48,9 @@ const createProduct = async (req, res) => {
   if(!quantity) {
     emptyFields.push('quantity')
   }
+  if(!sku) {
+    emptyFields.push('sku')
+  }
 
   if(emptyFields.length > 0) {
     return res.status(400).json({error: 'Please fill in highlighted fields', emptyFields })
@@ -56,10 +59,31 @@ const createProduct = async (req, res) => {
   // add to db
   try {
     const user_id = req.user._id
-    const product = await Product.create({name, category, purchasePrice, profitMargin, sellingPrice, user_id})
-    res.status(200).json(product)
+
+    // Check if a product with the same SKU already exists
+    const existingProduct = await Product.findOne({ sku, user_id })
+
+    if (existingProduct) {
+      // If the product with the same SKU exists, update the quantity
+      existingProduct.quantity += parseInt(quantity, 10)
+      await existingProduct.save()
+      res.status(200).json(existingProduct)
+    } else {
+      // If the product with the same SKU doesn't exist, create a new one
+      const product = await Product.create({
+        name,
+        category,
+        purchasePrice,
+        profitMargin,
+        sellingPrice,
+        quantity,
+        sku,
+        user_id,
+      })
+      res.status(200).json(product)
+    }
   } catch (error) {
-    res.status(400).json({error: error.message})
+      res.status(400).json({ error: error.message })
   }
 }
 

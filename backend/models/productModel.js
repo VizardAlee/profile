@@ -26,6 +26,14 @@ const productSchema = new Schema({
   user_id: {
     type: String,
     required: true
+  },
+  sku: {
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true
   }
 
 }, { timestamps: true })
