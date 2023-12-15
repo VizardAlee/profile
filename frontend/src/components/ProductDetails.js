@@ -32,6 +32,7 @@ const ProductDetails = ({ product }) => {
       <p><strong>Purchase Price: </strong>{product.purchasePrice}</p>
       <p><strong>Profit Margin: </strong>{product.profitMargin}</p>
       <p><strong>Selling Price: </strong>{product.sellingPrice}</p>
+      <p><strong>Quantity: </strong>{product.quantity}</p>
       <p>
         {formatDistanceToNow(
           new Date(product.updatedAt || product.createdAt),
