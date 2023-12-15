@@ -44,12 +44,32 @@ const ProductForm = () => {
       if (existingProduct) {
         setExistingProduct(existingProduct);
         setSelectedProduct(existingProduct);
+        setName(existingProduct.name);
+        setCategory(existingProduct.category);
+        setPurchasePrice(existingProduct.purchasePrice.toString());
+        setProfitMargin(existingProduct.profitMargin.toString());
+        setSellingPrice(existingProduct.sellingPrice.toString());
       } else {
         setExistingProduct(null);
         setSelectedProduct(null);
+        setName('');
+        setCategory('');
+        setPurchasePrice('');
+        setProfitMargin('');
+        setSellingPrice('');
       }
     }
   }, [manualSku, autoGenerateSku, skuOption, products]);
+
+  useEffect(() => {
+    // Calculate selling price based on purchase price and margin
+    if (purchasePrice !== '' && profitMargin !== '') {
+      const calculatedSellingPrice = (
+        parseFloat(purchasePrice) * (1 + parseFloat(profitMargin) / 100)
+      ).toFixed(2);
+      setSellingPrice(calculatedSellingPrice);
+    }
+  }, [purchasePrice, profitMargin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,6 +87,8 @@ const ProductForm = () => {
       sellingPrice: parseFloat(sellingPrice),
       quantity: parseFloat(quantity),
       sku: skuOption === 'manual' ? manualSku : autoGenerateSku,
+      // include the updated timestamp in the payload
+      updatedTimestamp: Date.now(),
     };
 
     const response = await fetch('/api/products', {
@@ -82,7 +104,8 @@ const ProductForm = () => {
 
     if (!response.ok) {
       setError(json.error);
-      setEmptyFields(json.emptyFields);
+      // Exclude auto-filled fields from validation
+      setEmptyFields(json.emptyFields.filter((field) => !['sellingPrice', 'quantity'].includes(field)));
     }
 
     if (response.ok) {
@@ -97,9 +120,21 @@ const ProductForm = () => {
       setSkuOption('manual');
       setError(null);
       setEmptyFields([]);
+    
+      // dispatch({ type: 'CREATE_PRODUCT', payload: json });
+
+      // Replace the existing product in the state if it already exists
+      const existingIndex = products.findIndex((existing) => existing.sku === json.sku)
+      if (existingIndex !== -1) {
+        // Include the updated timestamp in the payload
+        const updatedProduct = { ...json, updatedTimestamp: Date.now() }
+        dispatch({ type: 'UPDATE_PRODUCT', payload: updatedProduct, index: existingIndex })
+      } else {
+        dispatch({ type: 'CREATE_PRODUCT', payload: json })
+      }
+
       setSelectedProduct(null);
       console.log('new product added', json);
-      dispatch({ type: 'CREATE_PRODUCT', payload: json });
     }
   };
 
@@ -193,7 +228,7 @@ const ProductForm = () => {
       <label>Selling Price</label>
       <input
         type="number"
-        onChange={(e) => setSellingPrice(e.target.value)}
+        readOnly
         value={sellingPrice}
         className={emptyFields.includes('sellingPrice') ? 'error' : ''}
       />
