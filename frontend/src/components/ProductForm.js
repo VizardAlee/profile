@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { toast } from 'react-toastify';
 
 const ProductForm = () => {
   const { products, dispatch } = useProductsContext();
@@ -135,6 +136,12 @@ const ProductForm = () => {
 
       setSelectedProduct(null);
       console.log('new product added', json);
+    
+      // Show a toast notification
+      toast.success('New product added', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      })
     }
   };
 

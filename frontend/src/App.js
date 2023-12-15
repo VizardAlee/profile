@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // pages & components
 import Home from './pages/Home'
@@ -31,6 +33,8 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+
+      <ToastContainer />
     </div>
   );
 }

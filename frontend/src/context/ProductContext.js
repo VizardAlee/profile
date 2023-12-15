@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext , useReducer } from "react";
 
 export const ProductsContext = createContext()
 
@@ -6,14 +6,17 @@ export const productsReducer = (state, action) => {
   switch (action.type) {
     case 'SET_PRODUCTS':
       return {
+        ...state,
         products: action.payload
       }
     case 'CREATE_PRODUCT':
       return {
+        ...state,
         products: [action.payload, ...state.products]
       }
     case 'DELETE_PRODUCT':
       return {
+        ...state,
         products: state.products.filter((p) => p._id !== action.payload._id)
       }
     default:
@@ -33,3 +36,13 @@ export const ProductsContextProvider = ({ children }) => {
     </ProductsContext.Provider>
   )
 }
+
+const useProductsContext = () => {
+  const context = useContext(ProductsContext)
+  if (!context) {
+    throw new Error('useProductsContext must be used within a ProductsProvider')
+  }
+  return context
+}
+
+export default useProductsContext
