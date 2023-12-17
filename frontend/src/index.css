@@ -81,6 +81,45 @@ header a {
   color: #333;
 }
 
+/* product table */
+.product-table {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 2px 2px 5px rgba(218, 195, 195, 0.05);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--primary);
+  color: #fff;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: rgba(26, 172, 131, 0.1);
+}
+
+/* Delete button */
+.delete-btn {
+  cursor: pointer;
+  background: var(--error);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: "Roboto";
+}
+
 /* new product form */
 label, input {
   display: block;

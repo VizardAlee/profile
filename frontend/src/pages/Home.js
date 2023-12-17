@@ -3,7 +3,8 @@ import { useProductsContext } from "../hooks/useProductsContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 //  components
-import ProductDetails from '../components/ProductDetails'
+// import ProductDetails from '../components/ProductDetails'
+import ProductTable from '../components/ProductTable'
 import ProductForm from '../components/ProductForm'
 
 const Home = () => {
@@ -32,9 +33,7 @@ const Home = () => {
   return (
     <div className="home">
       <div className='products'>
-        {products && products.map((product) => (
-          <ProductDetails key={product._id} product={product} />
-        ))}
+        <ProductTable />
       </div>
       <ProductForm />
     </div>
