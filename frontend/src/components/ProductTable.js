@@ -2,6 +2,7 @@ import React from "react";
 import { useProductsContext } from "../hooks/useProductsContext";
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 
 const ProductTable = () => {
@@ -41,13 +42,15 @@ const ProductTable = () => {
             <th>Selling Price (&#x20A6;)</th>
             <th>Quantity</th>
             <th>Last Updated</th>
-            <th>Action</th>
+            <th>Action 1</th>
+            <th>Action 2</th>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product.name}</td>
+              {/* Use Link to navigate to the product details */}
               <td>{product.category}</td>
               <td>{product.purchasePrice}</td>
               <td>{product.profitMargin}</td>
@@ -58,6 +61,9 @@ const ProductTable = () => {
                   new Date(product.updatedAt || product.createdAt),
                   { addSuffix: true }
                 )}
+              </td>
+              <td>
+                <Link to={`/product/${product._id}`}>view</Link>
               </td>
               <td>
                 <button className="delete-btn" onClick={() => handleDelete(product._id)}>

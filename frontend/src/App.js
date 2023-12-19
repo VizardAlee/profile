@@ -8,6 +8,8 @@ import Home from './pages/Home'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
+import ProductDetails from './components/ProductDetails';
+import EditProduct from './components/EditProduct';
 
 function App() {
   const { user } = useAuthContext()
@@ -30,6 +32,11 @@ function App() {
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
             />
+            <Route
+              path="/product/:productId"
+              element={<ProductDetails />} // Use the ProductDetails component
+            />
+            <Route path='/products/:id/edit' element={<EditProduct />} />
           </Routes>
         </div>
       </BrowserRouter>
