@@ -10,7 +10,9 @@ import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import ProductDetails from './components/ProductDetails';
 import EditProduct from './components/EditProduct';
-
+// import UserProfile from './components/UserProfile';
+// import CreateUserProfile from './components/CreateUserProfile';
+import UserProfileDisplay from './components/UserProfileDisplay';
 function App() {
   const { user } = useAuthContext()
 
@@ -37,6 +39,19 @@ function App() {
               element={<ProductDetails />} // Use the ProductDetails component
             />
             <Route path='/products/:id/edit' element={<EditProduct />} />
+            <Route
+              path='/profile'
+              element={
+                user ? (
+                  <>
+                    {/* <UserProfile /> */}
+                    <UserProfileDisplay />
+                  </>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
           </Routes>
         </div>
       </BrowserRouter>

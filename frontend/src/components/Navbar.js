@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useLogout } from "../hooks/useLogout"
 import { useAuthContext } from "../hooks/useAuthContext"
 
@@ -19,7 +19,10 @@ const Navbar = () => {
         <nav>
           {user && (
             <div>
-              <span>{user.email}</span>
+              <NavLink to="/profile">
+                Profile
+              </NavLink>
+              <span className="emailSpot">{user.firstName}</span>
               <button onClick={handleClick}>Log out</button>
             </div>
           )}

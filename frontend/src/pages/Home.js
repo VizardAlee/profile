@@ -8,7 +8,7 @@ import ProductTable from '../components/ProductTable'
 import ProductForm from '../components/ProductForm'
 
 const Home = () => {
-  const {products, dispatch} = useProductsContext()
+  const { dispatch} = useProductsContext()
   const {user} = useAuthContext()
 
   useEffect(() => {

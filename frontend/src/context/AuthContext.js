@@ -5,7 +5,7 @@ export const AuthContext = createContext()
 export const authReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
-      return { user: action.payload }
+      return { ...state, user: action.payload }
     case 'LOGOUT':
       return { user: null }
     default:
@@ -24,12 +24,31 @@ export const AuthContextProvider = ({ children })  => {
     if (user) {
       dispatch({ type: 'LOGIN', payload: user })
     }
-  }, [])
+  }, [dispatch])
 
   console.log('AuthContext state: ', state)
 
+  const fetchUserProfile = async (token) => {
+    try {
+      const response = await fetch('api/user/profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'applicaion/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        dispatch({ type: 'LOGIN', payload: { ...state.user, ...data } })
+      }
+    } catch (error) {
+      console.error('Error  fetching user profile:', error)
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{...state, dispatch}}>
+    <AuthContext.Provider value={{...state, dispatch, fetchUserProfile}}>
       { children }
     </AuthContext.Provider>
   )
