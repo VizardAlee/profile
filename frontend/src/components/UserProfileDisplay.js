@@ -1,6 +1,7 @@
 // UserProfileDetails.js
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { Link } from 'react-router-dom';
 
 const UserProfileDetails = () => {
   const { user } = useAuthContext();
@@ -45,6 +46,7 @@ const UserProfileDetails = () => {
           <p>Business Name: {userData.businessName}</p>
           <p>Business Address: {userData.businessAddress}</p>
           <p>Website: {userData.webSite}</p>
+          <Link to="/">Return</Link>
         </>
       ) : (
         <p>Loading user data...</p>
