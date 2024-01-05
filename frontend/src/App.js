@@ -10,6 +10,7 @@ import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import ProductDetails from './components/ProductDetails';
 import EditProduct from './components/EditProduct';
+import EditProfile from './components/EditProfile';
 // import UserProfile from './components/UserProfile';
 // import CreateUserProfile from './components/CreateUserProfile';
 import UserProfileDisplay from './components/UserProfileDisplay';
@@ -47,6 +48,16 @@ function App() {
                     {/* <UserProfile /> */}
                     <UserProfileDisplay />
                   </>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path='/profile/update'
+              element={
+                user ? (
+                  <EditProfile />
                 ) : (
                   <Navigate to="/login" />
                 )
