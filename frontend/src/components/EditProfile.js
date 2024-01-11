@@ -3,19 +3,26 @@ import { useAuthContext } from '../hooks/useAuthContext'
 
 const EditProfile = ({ setEditing, handleUpdate }) => {
   const { user } = useAuthContext()
-  const [editedData, setEditedData] = useState({})
+  const [editedData, setEditedData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    businessAddress: '',
+    webSite: '',
+  })
 
   // Load existing user data into the form
   useEffect(() => {
-    setEditedData({
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      phoneNumber: user.phoneNumber || '',
-      // email: user.email || '',
-      // businessName: user.businessName || '',
-      businessAddress: user.businessAddress || '',
-      webSite:user.webSite || '',
-    })
+    if (user) {
+      setEditedData((prevData) => ({
+        ...prevData,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        phoneNumber: user.phoneNumber || '',
+        businessAddress: user.businessAddress || '',
+        webSite: user.webSite || '',
+      }))
+    }
   }, [user])
 
   const handleChange = (e) => {

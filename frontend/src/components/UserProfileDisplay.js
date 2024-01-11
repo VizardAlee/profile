@@ -58,7 +58,7 @@ const UserProfileDetails = () => {
               <p>Business Address: {userData.businessAddress}</p>
               <p>Website: {userData.webSite}</p>
               <Link to="/">Return</Link>
-              <Link to="/profile/edit" onClick={() => setEditing(true)}>Edit Profile</Link>
+              <Link to="/profile/update" onClick={() => setEditing(true)}>Edit Profile</Link>
             </>
           ) : (
         <p>Loading user data...</p>
