@@ -36,11 +36,28 @@ const UserProfileDetails = () => {
     }
   }, [user]);
 
-  const handleUpdate = () => {
-    setEditing(false)
-    // fetchUserData()
-  }
+  const handleUpdate = async () => {
+    try {
+      // Make a request to backend to fetch updated user details
+      const response = await fetch('/api/user/details', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
+      if (response.ok) {
+        const updatedUserData = await response.json();
+        setUserData(updatedUserData);
+        console.log('User details updated successfully');
+      } else {
+        console.error('Failed to fetch updated user details');
+      }
+    } catch (error) {
+      console.error('Error fetching updated user details', error);
+    }
+    setEditing(false);
+  };
   return (
     <div>
       <h2>User Profile Details</h2>

@@ -1,33 +1,74 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
 
-const EditProfile = ({ setEditing, handleUpdate }) => {
+const EditProfile = ({ setEditing }) => {
+  const navigate = useNavigate()
   const { user } = useAuthContext()
+  const [loaded, setLoaded] = useState(false)
   const [editedData, setEditedData] = useState({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    businessAddress: '',
-    webSite: '',
+    firstName: user.firstName || '',
+    lastName: user.lastName || '',
+    phoneNumber: user.phoneNumber || '',
+    businessAddress: user.businessAddress || '',
+    webSite: user.webSite || '',
   })
 
   // Load existing user data into the form
   useEffect(() => {
+    const fetchUserData =  async () => {
+      try {
+        // make request to your backend to fetch user details
+        const response = await fetch('/api/user/details', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setEditedData((prevData) => ({  ...prevData, ...data }))
+          setLoaded(true)
+        } else {
+          console.error('Failed to fetch user details')
+        }
+      } catch (error) {
+        console.error('Error fetching user details', error)
+      }
+    }
     if (user) {
-      setEditedData((prevData) => ({
-        ...prevData,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        phoneNumber: user.phoneNumber || '',
-        businessAddress: user.businessAddress || '',
-        webSite: user.webSite || '',
-      }))
+      fetchUserData()
     }
   }, [user])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setEditedData((prevData) => ({ ...prevData, [name]: value}))
+  }
+
+  const handleUpdate = async () => {
+    try {
+      // Make a request to backend to fetch updated user details
+      const response = await fetch('api/user/details', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+
+      if (response.ok) {
+        const updatedUserData = await response.json()
+        setEditedData(updatedUserData)
+        console.log('User details updated successfully')
+      } else {
+        console.error('Failed  to fetch updated user details')
+      }
+    } catch (error) {
+      console.error('Error fetching updated user details', error)
+    }
+    setEditing(false)
+    // fetchUserData()
   }
 
   const handleSubmit = async (e) => {
@@ -47,6 +88,10 @@ const EditProfile = ({ setEditing, handleUpdate }) => {
       if (response.ok) {
         // If the update is successful, trigger the handleUpdate function
         handleUpdate()
+        // Exit edit mode after updating
+        // setEditing(false)
+        // Navigate backt o user profile details page
+         navigate('/profile')
       } else {
         console.error('Failed to update user details')
       }
@@ -58,7 +103,8 @@ const EditProfile = ({ setEditing, handleUpdate }) => {
   return (
     <div>
       <h2>Edit Profile</h2>
-      <form onSubmit={handleSubmit}>
+      {loaded ? (
+        <form onSubmit={handleSubmit}>
           <label>
           First Name:
           </label>
@@ -106,8 +152,10 @@ const EditProfile = ({ setEditing, handleUpdate }) => {
           />
           <button type='submit'>Save Changes</button>
           <button onClick={() => setEditing(false)}>Cancel</button>
-
-      </form>
+        </form>
+      ) : (
+        <p>Loaded user data...</p>
+      )}
     </div>
   )
 }
