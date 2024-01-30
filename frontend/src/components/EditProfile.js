@@ -67,7 +67,7 @@ const EditProfile = ({ setEditing }) => {
     } catch (error) {
       console.error('Error fetching updated user details', error)
     }
-    setEditing(false)
+    // setEditing(false)
     // fetchUserData()
   }
 
