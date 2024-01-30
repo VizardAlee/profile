@@ -100,6 +100,12 @@ const EditProfile = ({ setEditing }) => {
     }
   }
 
+  const handleCancel = (e) => {
+    e.preventDefault()
+    navigate('/profile')
+    // setEditing(false)
+  }
+
   return (
     <div>
       <h2>Edit Profile</h2>
@@ -151,7 +157,7 @@ const EditProfile = ({ setEditing }) => {
             onChange={handleChange}
           />
           <button type='submit'>Save Changes</button>
-          <button onClick={() => setEditing(false)}>Cancel</button>
+          <button onClick={handleCancel}>Cancel</button>
         </form>
       ) : (
         <p>Loaded user data...</p>

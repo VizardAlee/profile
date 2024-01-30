@@ -14,8 +14,10 @@ import EditProfile from './components/EditProfile';
 // import UserProfile from './components/UserProfile';
 // import CreateUserProfile from './components/CreateUserProfile';
 import UserProfileDisplay from './components/UserProfileDisplay';
+import { useState } from 'react';
 function App() {
   const { user } = useAuthContext()
+  const [, setEditing] = useState(false)
 
   return (
     <div className="App">
@@ -46,7 +48,7 @@ function App() {
                 user ? (
                   <>
                     {/* <UserProfile /> */}
-                    <UserProfileDisplay />
+                    <UserProfileDisplay setEditing={setEditing} />
                   </>
                 ) : (
                   <Navigate to="/login" />
