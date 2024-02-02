@@ -29,19 +29,19 @@ const getProduct = async (req, res)  => {
 
 // create new product
 const createProduct = async (req, res) => {
-  const {name, category, purchasePrice, profitMargin, sellingPrice, quantity, sku} = req.body
+  const {name, category, sellingPrice, quantity, sku} = req.body
 
   let emptyFields = []
 
   if(!name) {
     emptyFields.push('name')
   }
-  if(!purchasePrice) {
-    emptyFields.push('purchasePrice')
-  }
-  if(!profitMargin) {
-    emptyFields.push('profitMargin')
-  }
+  // if(!purchasePrice) {
+  //   emptyFields.push('purchasePrice')
+  // }
+  // if(!profitMargin) {
+  //   emptyFields.push('profitMargin')
+  // }
   if(!sellingPrice) {
     emptyFields.push('sellingPrice')
   }
@@ -73,8 +73,8 @@ const createProduct = async (req, res) => {
       const product = await Product.create({
         name,
         category,
-        purchasePrice,
-        profitMargin,
+        // purchasePrice,
+        // profitMargin,
         sellingPrice,
         quantity,
         sku,
@@ -118,8 +118,8 @@ const updateProduct = async (req, res) => {
       {
         name: req.body.name,
         category: req.body.category,
-        purchasePrice: req.body.purchasePrice,
-        profitMargin: req.body.profitMargin,
+        // purchasePrice: req.body.purchasePrice,
+        // profitMargin: req.body.profitMargin,
         sellingPrice: req.body.sellingPrice,
         quantity: req.body.quantity,
       },

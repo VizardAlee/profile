@@ -9,8 +9,8 @@ const ProductForm = () => {
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [purchasePrice, setPurchasePrice] = useState('');
-  const [profitMargin, setProfitMargin] = useState('');
+  // const [purchasePrice, setPurchasePrice] = useState('');
+  // const [profitMargin, setProfitMargin] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [skuOption, setSkuOption] = useState('manual');
@@ -47,30 +47,30 @@ const ProductForm = () => {
         setSelectedProduct(existingProduct);
         setName(existingProduct.name);
         setCategory(existingProduct.category);
-        setPurchasePrice(existingProduct.purchasePrice.toString());
-        setProfitMargin(existingProduct.profitMargin.toString());
+        // setPurchasePrice(existingProduct.purchasePrice.toString());
+        // setProfitMargin(existingProduct.profitMargin.toString());
         setSellingPrice(existingProduct.sellingPrice.toString());
       } else {
         setExistingProduct(null);
         setSelectedProduct(null);
         setName('');
         setCategory('');
-        setPurchasePrice('');
-        setProfitMargin('');
+        // setPurchasePrice('');
+        // setProfitMargin('');
         setSellingPrice('');
       }
     }
   }, [manualSku, autoGenerateSku, skuOption, products]);
 
-  useEffect(() => {
-    // Calculate selling price based on purchase price and margin
-    if (purchasePrice !== '' && profitMargin !== '') {
-      const calculatedSellingPrice = (
-        parseFloat(purchasePrice) * (1 + parseFloat(profitMargin) / 100)
-      ).toFixed(2);
-      setSellingPrice(calculatedSellingPrice);
-    }
-  }, [purchasePrice, profitMargin]);
+  // useEffect(() => {
+  //   // Calculate selling price based on purchase price and margin
+  //   if (purchasePrice !== '' && profitMargin !== '') {
+  //     const calculatedSellingPrice = (
+  //       parseFloat(purchasePrice) * (1 + parseFloat(profitMargin) / 100)
+  //     ).toFixed(2);
+  //     setSellingPrice(calculatedSellingPrice);
+  //   }
+  // }, [purchasePrice, profitMargin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,8 +83,8 @@ const ProductForm = () => {
     const product = {
       name,
       category,
-      purchasePrice: parseFloat(purchasePrice),
-      profitMargin: parseFloat(profitMargin),
+      // purchasePrice: parseFloat(purchasePrice),
+      // profitMargin: parseFloat(profitMargin),
       sellingPrice: parseFloat(sellingPrice),
       quantity: parseFloat(quantity),
       sku: skuOption === 'manual' ? manualSku : autoGenerateSku,
@@ -112,8 +112,8 @@ const ProductForm = () => {
     if (response.ok) {
       setName('');
       setCategory('');
-      setPurchasePrice('');
-      setProfitMargin('');
+      // setPurchasePrice('');
+      // setProfitMargin('');
       setSellingPrice('');
       setQuantity('');
       setManualSku('');
@@ -216,7 +216,7 @@ const ProductForm = () => {
         </>
       )}
 
-      <label>Purchase Price</label>
+      {/* <label>Purchase Price</label>
       <input
         type="number"
         onChange={(e) => setPurchasePrice(e.target.value)}
@@ -230,7 +230,7 @@ const ProductForm = () => {
         onChange={(e) => setProfitMargin(e.target.value)}
         value={profitMargin}
         className={emptyFields.includes('profitMargin') ? 'error' : ''}
-      />
+      /> */}
 
       <label>Selling Price</label>
       <input

@@ -34,12 +34,12 @@ const ProductDetails = () => {
       <p>
         <strong>Category:</strong> {product.category}
       </p>
-      <p>
+      {/* <p>
         <strong>Purchase Price:</strong> {product.purchasePrice}
       </p>
       <p>
         <strong>Profit Margin:</strong> {product.profitMargin}
-      </p>
+      </p> */}
       <p>
         <strong>Selling Price:</strong> {product.sellingPrice}
       </p>

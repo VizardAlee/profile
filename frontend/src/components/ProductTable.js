@@ -37,8 +37,8 @@ const ProductTable = () => {
           <tr>
             <th>Name</th>
             <th>Category</th>
-            <th>Purchase Price (&#x20A6;)</th>
-            <th>Profit Margin (%)</th>
+            {/* <th>Purchase Price (&#x20A6;)</th>
+            <th>Profit Margin (%)</th> */}
             <th>Selling Price (&#x20A6;)</th>
             <th>Quantity</th>
             <th>Last Updated</th>
@@ -52,8 +52,8 @@ const ProductTable = () => {
               <td>{product.name}</td>
               {/* Use Link to navigate to the product details */}
               <td>{product.category}</td>
-              <td>{product.purchasePrice}</td>
-              <td>{product.profitMargin}</td>
+              {/* <td>{product.purchasePrice}</td>
+              <td>{product.profitMargin}</td> */}
               <td>{product.sellingPrice}</td>
               <td>{product.quantity}</td>
               <td>
